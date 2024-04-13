@@ -23,39 +23,39 @@ public class ProductoController {
     private ProductoRepository productoRepository;
 
     @GetMapping
-    public List<Producto> getAllProductos() {
+    public List<Producto> obtenerProductos() {
         return productoRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Producto getProductoById(@PathVariable Long id) {
+    public Producto obtenerProductoPorId(@PathVariable Long id) {
         return productoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("No se encontró el producto con el ID: " + id));
+                .orElseThrow(() -> new RuntimeException("No se encontró el producto con el ID: " + id));
     }
 
     @PostMapping
-    public Producto createProducto(@RequestBody Producto producto) {
+    public Producto crearProducto(@RequestBody Producto producto) {
         return productoRepository.save(producto);
     }
 
-    @PutMapping
-    public Producto updateProducto(@PathVariable Long id, @RequestBody Producto detallesProducto) {
+    @PutMapping("/{id}")
+    public Producto actualizarProducto(@PathVariable Long id, @RequestBody Producto detallesProducto) {
         Producto producto = productoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("No se encontró el producto con el ID: " + id));
-        
+                .orElseThrow(() -> new RuntimeException("No se encontró el producto con el ID: " + id));
+
         producto.setNombre(detallesProducto.getNombre());
         producto.setPrecio(detallesProducto.getPrecio());
-        
+
         return productoRepository.save(producto);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProducto(@PathVariable Long id) {
+    public String borrarProducto(@PathVariable Long id) {
         Producto producto = productoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("No se encontró el producto con el ID: " + id));
+                .orElseThrow(() -> new RuntimeException("No se encontró el producto con el ID: " + id));
 
         productoRepository.delete(producto);
-        return "El producto con el ID: " + id + " ha sido eliminado correctamente";
+        return "El producto con el ID: " + id + " fue eliminado correctamente";
     }
 
 }
